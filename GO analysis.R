@@ -1,0 +1,13 @@
+library("clusterProfiler")
+library("topGO")
+library("Rgraphviz")
+library("pathview")
+library("org.Hs.eg.db")
+library("ggplot2")
+
+load("difgene.Rdata")
+  entrez_id_full = mapIds(x = org.Hs.eg.db,keys = input$gene,keytype = "SYMBOL",column = "ENTREZID")
+  entrez_id = na.omit(entrez_id_full)
+  ENTREZID = data.frame(entrez_id)
+  enrich.go.all = enrichGO(gene = entrez_id, OrgDb = org.Hs.eg.db, keyType = "ENTREZID", ont = "ALL", pvalueCutoff = 0.01, qvalueCutoff = 0.05, readable = T)
+  write.table(enrich.go.all, file="GO.table")
